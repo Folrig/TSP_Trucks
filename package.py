@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class Package:
 
     # A class to define a package that will be delivered by a truck
