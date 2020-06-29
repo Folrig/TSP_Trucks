@@ -18,16 +18,17 @@ class Truck:
     def begin_delivery(self):
         while len(self.current_load) > 0:
             for package in self.current_load:
-                # run algorithm to find shortest distance, should be easy
-                # Should just be shortest_distance = algorithm.function(current_location,
-                # package.address)
-                # Begin next for loop
                 self.next_loc = package.address_id
                 trip_distance = self.distance_reference[self.current_loc][self.next_loc]
                 trip_duration = trip_distance / 18.0
                 # ************ self.current_time = Time(current_time, trip_duration)
                 self.total_distance += trip_distance
-                package.delivery_status = 'Delivered'
                 package.delivery_time = self.current_time
+                if package.delivery_time <= package.deadline:
+                    package.delivery_status = 'Delivered on time'
+                elif package.delivery_time > package.deadline:
+                    package.delivery_status = '*** DELIVERED LATE ***'
+                else:
+                    package.delivery_status = 'Package lost. Delivery unknown'
                 self.current_loc = package.address_id
                 self.current_load.remove(package)
