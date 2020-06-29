@@ -17,8 +17,8 @@ def main():
     first_load = []
     second_load = []
     third_load = []
-    first_truck = Truck('08:00:00', first_load)
-    second_truck = Truck('09:05:00', second_load)
+    first_truck = Truck('08:00:00:AM', first_load)
+    second_truck = Truck('09:05:00:AM', second_load)
     with first_truck.current_load is 0 and first_truck.current_loc is 0:
         third_truck = Truck(first_truck.current_time, third_load)
 
