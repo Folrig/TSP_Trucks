@@ -13,7 +13,8 @@ class EfficiencyAlgorithm:
         current_loc = 0
         # Find each item's destination ID to match the distance table
         for item in unsorted_list:
-            for index in addresses[index][2]:
+            # TODO THIS IS PROBABLY INCORRECT. LOOK HERE IF ERRORS OCCUR
+            for index in range(len(addresses)):
                 if item.address is addresses[index][2]:
                     item.address_id = addresses[index][0]
         # Perform sorting into priority while any unsorted packages remain

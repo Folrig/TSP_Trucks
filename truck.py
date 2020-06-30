@@ -1,6 +1,5 @@
 from address_book import AddressBook
 from time import Time
-from priority_queue import PriorityQueue
 
 
 class Truck:
