@@ -29,12 +29,22 @@ def main():
     second_truck = Truck(second_load)
     third_truck = Truck(third_load)
     # Send the two drivers to begin deliveries at set times
-    first_truck.begin_delivery('08:00:00:AM')
-    second_truck.begin_delivery('09:05:00:AM')
+    first_truck.begin_delivery('08:00:AM')
+    second_truck.begin_delivery('09:05:AM')
+    # Take address change for package #9 into account
+    with first_truck.current_time is '10:20:AM':
+        for package in third_load:
+            if 'Wrong address' in package.notes:
+                package.address_id = 19
+                package.address = '410 S State St'
+                package.zip_code = '84111'
     # Because there are only two drivers, wait until the first returns
     # before sending out the third one
     with first_truck.current_load is 0 and first_truck.current_loc is 0:
-        third_truck.begin_delivery(first_truck.current_time)
+        if first_truck.current_time <= '10:20:AM':
+            third_truck.begin_delivery('10:20:AM')
+        else:
+            third_truck.begin_delivery(first_truck.current_time)
     # Create menu for input here to check things
     # TODO Implement menu system here
     # TODO Create menu using a separate function with while loop

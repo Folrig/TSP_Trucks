@@ -1,24 +1,42 @@
 class Time:
 
-    # A static class to take a time in HH:MM:SS and adjust it by minutes
+    # TODO make sure all time uses format of HH:MM:AM for data reading
+    # TODO make sure all time uses format of HH:MM AM for input and return values
+
+    @staticmethod
+    # A static method to adjust the time string into human readable form
+    def human_format(time):
+        time_str = time
+        time_str_arr = time_str.split(':')
+        hours = time_str_arr[0]
+        minutes = time_str_arr[1]
+        time_of_day = str.upper(time_str_arr[3])
+        return '{:02d}:{:02d} {}'.format(hours, minutes, time_of_day)
+
+    # A static method to adjust the time string for data usage
+    @staticmethod
+    def data_format(time):
+        time_str = time
+        time_str_arr = time_str.split(':')
+        hours = time_str_arr[0]
+        minutes = time_str_arr[1]
+        time_of_day = str.upper(time_str_arr[3])
+        return '{:02d}:{:02d} {}'.format(hours, minutes, time_of_day)
+
+    # A static method to take a time in HH:MM:SS and adjust it by minutes
     @staticmethod
     def adjust_time(time, time_passed):
         time_str = time
-        time_str_arr = time_str.split(':')
-        hours = int(time_str_arr[0])
-        minutes = int(time_str_arr[1])
-        seconds = int(time_str_arr[2])
-        time_of_day = str.upper(time_str_arr[3])
+        time_str_arr = time_str.split(' ')
+        time_str_arr = time_str_arr.split(':')
+        hours = float(time_str_arr[0])
+        minutes = float(time_str_arr[1])
+        time_of_day = str.upper(time_str_arr[2])
 
-        seconds_passed = int(60 * (time_passed % 1.0))
-        seconds += seconds_passed
-
-        minutes_passed = int(time_passed)
+        hours_passed = int(minutes) / 60
+        minutes_passed = int(minutes - (hours_passed * 60))
+        hours += hours_passed
         minutes += minutes_passed
-
-        if seconds >= 60:
-            seconds -= 60
-            minutes += 1
 
         if minutes >= 60:
             minutes -= 60
@@ -31,4 +49,4 @@ class Time:
             elif time_of_day is 'PM':
                 time_of_day = 'AM'
 
-        return '{:02d}:{:02d}:{:02d} {}'.format(int(hours), int(minutes), int(seconds), time_of_day)
+        return '{:02d}:{:02d}:{:02d}:{}'.format(int(hours), int(minutes), int(seconds), time_of_day)
