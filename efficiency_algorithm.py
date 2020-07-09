@@ -15,15 +15,17 @@ class EfficiencyAlgorithm:
         for item in unsorted_list:
             # TODO THIS IS PROBABLY INCORRECT. LOOK HERE IF ERRORS OCCUR
             for index in range(len(addresses)):
-                if item.address is addresses[index][2]:
-                    item.address_id = addresses[index][0]
+                if item.address == addresses[index][2]:
+                    # TODO remove print statement for checking
+                    # print(int(addresses[index][0]))
+                    item.address_id = int(addresses[index][0])
         # Perform sorting into priority while any unsorted packages remain
         while len(unsorted_list) > 0:
             smallest_distance = math.inf
             closest_package = None
             # Find the shortest distance between truck location and each loaded package
             for item in unsorted_list:
-                distance_curr_loc_and_item = distances[current_loc][item.address_id]
+                distance_curr_loc_and_item = float(distances[current_loc][item.address_id])
                 if distance_curr_loc_and_item <= smallest_distance:
                     smallest_distance = distance_curr_loc_and_item
                     closest_package = item

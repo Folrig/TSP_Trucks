@@ -6,20 +6,16 @@ class PackageSorting:
         first_truck_load = []
         second_truck_load = []
         third_truck_load = []
-
-        # TODO finish package sorting logic
+        # Complexity of O(n)
         for package in unsorted_package_list:
-            if 'Must' in package.notes:
+            if 'Must' in package.notes or '09:00 AM' in package.deadline:
                 first_truck_load.append(package)
-            elif '09:00:AM' in package.deadline:
-                first_truck_load.append(package)
-            elif 'Can only' in package.notes:
+            elif 'Can only' in package.notes or 'Delayed' in package.notes or '10:30 AM' in package.deadline:
                 second_truck_load.append(package)
-            elif 'Delayed' in package.notes:
-                second_truck_load.append(package)
-            elif '10:30:AM' in package.deadline:
-                second_truck_load.append(package)
-            else:
+            elif 'Wrong' in package.notes:
+                third_truck_load.append(package)
+        for package in unsorted_package_list:
+            if 'EOD' in package.deadline and 'N/A' in package.notes:
                 if len(first_truck_load) < 16:
                     first_truck_load.append(package)
                 elif len(second_truck_load) < 16:

@@ -16,3 +16,13 @@ class Package:
         self.delivery_status = delivery_status
         self.left_hub_time = None
         self.delivery_time = None
+
+    def __str__(self):
+        # TODO make sure to go over requirements for printing information
+        print('Package #%s:         Destination: %s, %s, %s %s      '
+              'Weight: %s kg        Deadline: %s       '
+              'Left hub at: %s      Delivery Time: %s'
+              'Delivery Status: %s',
+              self.id_num, self.address, self.city, self.state, self.zip_code,
+              self.weight, self.deadline, self.left_hub_time, self.delivery_time,
+              self.delivery_status)
