@@ -6,6 +6,7 @@ from package_sorting import PackageSorting
 from truck import Truck
 from my_time import Time
 from package import Package
+from priority_queue import PriorityQueue
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
             all_packages.append(package)
     # Add packages to hash table
     for package in all_packages:
-        package_hash_table.insert(package)
+        package_hash_table.insert(package.id_num, package)
     # Presort packages for each truck
     all_packages = PackageSorting.sort_packages(all_packages)
     # Create 3 load lists based on package priorities, possibly in a different class
@@ -42,19 +43,19 @@ def main():
     if first_truck.current_time >= '10:20 AM':
         for queue_item in third_load.queue:
             if 'Wrong address' in queue_item.item.notes:
-                package.address_id = 19
-                package.address = '410 S State St'
-                package.zip_code = '84111'
+                queue_item.item.address_id = 19
+                queue_item.item.address = '410 S State St'
+                queue_item.item.zip_code = '84111'
     # Because there are only two drivers, wait until the first returns
     # before sending out the third one
-    if first_truck.current_load == 0 and first_truck.current_loc == 0:
+    if first_truck.current_loc == 0:
         if first_truck.current_time <= '10:20:AM':
             # Take address change into account if not already done
-            for package in third_load:
-                if 'Wrong address' in package.notes and package.address_id != 19:
-                    package.address_id = 19
-                    package.address = '410 S State St'
-                    package.zip_code = '84111'
+            for queue_item in third_load.queue:
+                if 'Wrong address' in queue_item.item.notes:
+                    queue_item.item.address_id = 19
+                    queue_item.item.address = '410 S State St'
+                    queue_item.item.zip_code = '84111'
             third_truck.begin_delivery('10:20 AM')
         else:
             third_truck.begin_delivery(first_truck.current_time)
@@ -63,9 +64,9 @@ def main():
 
 
 def user_interface(hash_table, first_truck, second_truck, third_truck):
-    selection = None
-    while selection != '3':
-        print('Welcome to the WGUPS Delivery System')
+    selection = 0
+    while selection != 3:
+        print('\n\nWelcome to the WGUPS Delivery System')
         print('Today\'s route was completed by', third_truck.current_time)
         total_distance = float(first_truck.get_distance()) + \
             float(second_truck.get_distance()) + float(third_truck.get_distance())
@@ -74,54 +75,50 @@ def user_interface(hash_table, first_truck, second_truck, third_truck):
         print('1: Search for package information by package ID')
         print('2: Print delivery status of packages at a specific time')
         print('3: Exit program')
-        selection = input()
-        if selection != '1' or selection != '2' or selection != '3':
-            print('Invalid selection. Please choose option 1-3')
+        selection = int(input())
+        if selection == 1:
+            package_id_input = input('Enter a package ID to search for: ')
+            package = hash_table.get(package_id_input)
+            package.__str__()
+        elif selection == 2:
+            time_input = input('Enter a time to search for deliveries in HH:MM AM/PM'
+                               ', example: 9:30 AM: ')
+            try:
+                time_input = Time.to_data_format(time_input, True)
+                for bucket in hash_table.bucket_list:
+                    for value in bucket:
+                        print_package_info_at_time(time_input, value[1])
+            except ValueError:
+                print('Invalid time entry')
+        elif selection == 3:
+            print('Thank you for using the system.')
         else:
-            if selection == '1':
-                package_id_input = input('Enter a package ID to search for: ')
-                package = hash_table(package_id_input)
-                package.__str__()
-            elif selection == '2':
-                time_input = input('Enter a time to search for deliveries in HH:MM AM/PM'
-                                   ', example: 9:30 AM: ')
-                try:
-                    time_input = Time.to_data_format(time_input)
-                    # TODO this might cause error not reading the hash table correctly
-                    for bucket in hash_table:
-                        for package in bucket:
-                            print_package_info_at_time(time_input, package)
-                except ValueError:
-                    print('Invalid time entry')
-            else:
-                print('Error in user interface')
-    print('Thank you for using the system.')
+            print('Please enter a valid menu option')
+            print('\n\n')
 
 
 def print_package_info_at_time(time_input, package):
-    if time_input < package.self.left_hub_time:
+    if time_input < package.left_hub_time:
         left_hub_time = 'At hub'
         delivery_time = 'N/A'
         delivery_status = 'At hub'
-    elif time_input <= package.self.delivery_time:
-        left_hub_time = package.self.left_hub_time
+    elif time_input <= package.delivery_time:
+        left_hub_time = package.left_hub_time
         delivery_time = 'N/A'
         delivery_status = 'En route'
-    elif time_input >= package.self.delivery_time:
-        left_hub_time = package.self.left_hub_time
-        delivery_time = package.self.delivery_time
-        delivery_status = package.self.delivery_status
+    elif time_input >= package.delivery_time:
+        left_hub_time = package.left_hub_time
+        delivery_time = package.delivery_time
+        delivery_status = package.delivery_status
     else:
         print('Error in print package info at time')
         left_hub_time = None
         delivery_time = None
         delivery_status = None
-    print('Package #%s:         Destination: %s, %s, %s %s      '
-          'Weight: %s kg        Deadline: %s       '
-          'Left hub at: %s      Delivery Time: %s'
-          'Delivery Status: %s',
-          package.self.id_num, package.self.address, package.self.city, package.self.state, package.self.zip_code,
-          package.self.weight, package.self.deadline, left_hub_time, delivery_time, delivery_status)
+    print('\nPackage:', package.id_num, '\nDestination:', package.address, package.city, package.state, package.zip_code,
+          '\nWeight:', package.weight, 'kg', '\nDeadline:', package.deadline,
+          '\nLeft hub at:', left_hub_time, '\tDelivery Time:', delivery_time,
+          '\tDelivery Status:', delivery_status, '\n')
 
 
 if __name__ == '__main__':

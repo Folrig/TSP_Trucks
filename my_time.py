@@ -28,7 +28,7 @@ class Time:
             if hours < 10:
                 hours = str(hours)
                 hours = '0' + hours
-            formatted_time = hours + ':' + minutes + ' ' + time_of_day
+            formatted_time = str(hours) + ':' + minutes + ' ' + time_of_day
         else:
             formatted_time = str(hours) + ':' + minutes + ' ' + time_of_day
         return formatted_time

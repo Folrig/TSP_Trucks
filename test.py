@@ -3,7 +3,10 @@ from my_time import Time
 
 
 def main():
-    print(Time.to_data_format('09:30 AM', false))
+    my_array = [0, 1, 2]
+    print(my_array)
+    my_array.append(5)
+    print(my_array)
 
 
 if __name__ == '__main__':

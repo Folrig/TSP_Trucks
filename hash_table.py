@@ -1,3 +1,10 @@
+class HashEntry:
+
+    def __init__(self, key, item):
+        self.key = key
+        self.item = item
+
+
 class HashTable:
     # A data structure class to be utilized for data organization
     # using key-value pairs
@@ -7,23 +14,36 @@ class HashTable:
         for i in range(capacity):
             self.bucket_list.append([])
 
-    # An insertion function places an item into the hash table
-    def insert(self, package):
-        # Select the bucket to store the package
-        bucket = hash(package) % len(self.bucket_list)
-        bucket_list = self.bucket_list[bucket]
-        # Store package into the list of buckets
-        bucket_list.append(package)
+    # Private getter to create a hash key
+    # Complexity is O(1)
+    def _get_hash(self, key):
+        bucket = int(key) % len(self.bucket_list)
+        return bucket
+
+    # Insert a new package value into the hash table
+    # Space-time complexity is O(N)
+    def insert(self, key, item):
+        key_hash = self._get_hash(key)
+        key_value = [key, item]
+
+        if self.bucket_list[key_hash] is None:
+            self.bucket_list[key_hash] = list([key_value])
+            return True
+        else:
+            for value in self.bucket_list[key_hash]:
+                if value[0] == key:
+                    value[1] = key_value
+                    return True
+            self.bucket_list[key_hash].append(key_value)
+            return True
 
     # Look up function that uses a package's ID and returns the correspond
     # package's info
-    def look_up(self, package_id_num):
-        # Identify the bucket that the package is in by its ID
-        bucket = hash(package_id_num) % len(self.bucket_list)
-        # Return the package if it is found in the bucket list
-        if package_id_num in self.bucket_list[bucket]:
-            package_index = self.bucket_list.index(package_id_num)
-            return self.bucket_list[package_index]
-        # Return nothing if the package is not found
-        else:
-            return None
+    # Complexity is O(N)
+    def get(self, key):
+        key_hash = self._get_hash(key)
+        if self.bucket_list[key_hash] is not None:
+            for value in self.bucket_list[key_hash]:
+                if value[0] == key:
+                    return value[1]
+        return None

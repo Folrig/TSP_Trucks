@@ -19,10 +19,7 @@ class Package:
 
     def __str__(self):
         # TODO make sure to go over requirements for printing information
-        print('Package #%s:         Destination: %s, %s, %s %s      '
-              'Weight: %s kg        Deadline: %s       '
-              'Left hub at: %s      Delivery Time: %s'
-              'Delivery Status: %s',
-              self.id_num, self.address, self.city, self.state, self.zip_code,
-              self.weight, self.deadline, self.left_hub_time, self.delivery_time,
-              self.delivery_status)
+        print('\nPackage:', self.id_num, '\nDestination:', self.address, self.city, self.state, self.zip_code,
+              '\nWeight:', self.weight, 'kg', '\nDeadline:', self.deadline,
+              '\nLeft hub at:', self.left_hub_time, '\tDelivery Time:', self.delivery_time,
+              '\tDelivery Status:', self.delivery_status)
