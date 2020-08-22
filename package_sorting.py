@@ -1,10 +1,14 @@
-import math
+# James Spencer  ID: 000486930
+
+# import math
 from address_book import AddressBook
-from priority_queue import PriorityQueue
+# from priority_queue import PriorityQueue
 
 
 class PackageSorting:
-    # A static class to presort packages based upon specific constraints
+    # A static class to presort packages into their truck
+    # based upon specific given constraints
+    # Overall complexity is O(n^2)
     @staticmethod
     def sort_packages(unsorted_package_list):
         # Create variables to store our references
@@ -16,10 +20,12 @@ class PackageSorting:
         second_truck_addresses = []
         addresses = AddressBook.address_reference()
         # Find each item's destination ID to match the distance table
+        # Complexity of O(n^2)
         for item in unsorted_package_list:
             for index in range(len(addresses)):
                 if item.address == addresses[index][2]:
                     item.address_id = int(addresses[index][0])
+        # Assign each package to the correct truck
         # Complexity of O(n)
         for package in unsorted_package_list:
             if 'Must' in package.notes or '09:00 AM' in package.deadline:

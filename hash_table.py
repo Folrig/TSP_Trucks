@@ -1,13 +1,17 @@
-class HashEntry:
+# James Spencer  ID: 000486930
 
+
+class HashEntry:
+    # A data structure class to be utilized by the
+    # hash table that is a key-value pair
     def __init__(self, key, item):
         self.key = key
         self.item = item
 
 
 class HashTable:
-    # A data structure class to be utilized for data organization
-    # using key-value pairs
+    # A data structure class to be utilized for data
+    # organization using the HashEntry key-value pairs
     def __init__(self):
         capacity = 40
         self.bucket_list = []
@@ -21,7 +25,7 @@ class HashTable:
         return bucket
 
     # Insert a new package value into the hash table
-    # Space-time complexity is O(N)
+    # Complexity is O(N)
     def insert(self, key, item):
         key_hash = self._get_hash(key)
         key_value = [key, item]
@@ -37,8 +41,8 @@ class HashTable:
             self.bucket_list[key_hash].append(key_value)
             return True
 
-    # Look up function that uses a package's ID and returns the correspond
-    # package's info
+    # Look up function that uses a package's ID and
+    # returns the corresponding package's information
     # Complexity is O(N)
     def get(self, key):
         key_hash = self._get_hash(key)

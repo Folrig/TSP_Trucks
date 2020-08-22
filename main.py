@@ -1,3 +1,6 @@
+# James Spencer  ID: 000486930
+
+
 import csv
 
 from efficiency_algorithm import EfficiencyAlgorithm
@@ -6,13 +9,13 @@ from package_sorting import PackageSorting
 from truck import Truck
 from my_time import Time
 from package import Package
-from priority_queue import PriorityQueue
 
 
 def main():
     # Create hash table for packages
     package_hash_table = HashTable()
     # Create 40 packages and assign the address IDs
+    # using the CSV data file
     all_packages = []
     with open('package_data.csv') as data:
         package_data = csv.reader(data, delimiter=',')
@@ -28,7 +31,7 @@ def main():
     first_load = all_packages[0]
     second_load = all_packages[1]
     third_load = all_packages[2]
-    # Run these lists through the sorting algorithm to computer the most efficient delivery order
+    # Run these lists through the sorting algorithm to compute the most efficient delivery order
     first_load = EfficiencyAlgorithm.organize_route(first_load)
     second_load = EfficiencyAlgorithm.organize_route(second_load)
     third_load = EfficiencyAlgorithm.organize_route(third_load)
@@ -46,8 +49,8 @@ def main():
                 queue_item.item.address_id = 19
                 queue_item.item.address = '410 S State St'
                 queue_item.item.zip_code = '84111'
-    # Because there are only two drivers, wait until the first returns
-    # before sending out the third one
+    # Because there are only two drivers, wait until the
+    # first returns before sending out the third one
     if first_truck.current_loc == 0:
         if first_truck.current_time <= '10:20:AM':
             # Take address change into account if not already done
@@ -64,22 +67,29 @@ def main():
 
 
 def user_interface(hash_table, first_truck, second_truck, third_truck):
+    # Print a menu and take user input for navigation
+    # of the system.
     selection = 0
     while selection != 3:
         print('\n\nWelcome to the WGUPS Delivery System')
         print('Today\'s route was completed by', third_truck.current_time)
+        print('Truck One\'s total mileage was: %.2f miles' % first_truck.get_distance())
+        print('Truck Two\'s total mileage was: %.2f miles' % second_truck.get_distance())
+        print('Truck Three\'s total mileage was: %.2f miles' % third_truck.get_distance())
         total_distance = float(first_truck.get_distance()) + \
             float(second_truck.get_distance()) + float(third_truck.get_distance())
-        print('Total distance traveled was:', "{0:.2f}".format(total_distance, 2), 'miles')
+        print('Total distance traveled was: %.2f miles' % total_distance)
         print('Please make a selection:')
         print('1: Search for package information by package ID')
         print('2: Print delivery status of packages at a specific time')
         print('3: Exit program')
         selection = int(input())
+        # Selection 1 is search for a package by ID
         if selection == 1:
             package_id_input = input('Enter a package ID to search for: ')
             package = hash_table.get(package_id_input)
             package.__str__()
+        # Selection 2 is search for packages at a time
         elif selection == 2:
             time_input = input('Enter a time to search for deliveries in HH:MM AM/PM'
                                ', example: 9:30 AM: ')
@@ -90,14 +100,18 @@ def user_interface(hash_table, first_truck, second_truck, third_truck):
                         print_package_info_at_time(time_input, value[1])
             except ValueError:
                 print('Invalid time entry')
+        # Selection 3 is end the program
         elif selection == 3:
             print('Thank you for using the system.')
+        # Catch for if user does not input a valid choice
         else:
             print('Please enter a valid menu option')
             print('\n\n')
 
 
 def print_package_info_at_time(time_input, package):
+    # Use the hash table to identify the status
+    # of a package at a specific given time
     if time_input < package.left_hub_time:
         left_hub_time = 'At hub'
         delivery_time = 'N/A'

@@ -1,5 +1,7 @@
-class Package:
+# James Spencer  ID: 000486930
 
+
+class Package:
     # A class to define a package that will be delivered by a truck
     # Defines the ID, delivery address, special delivery notes,
     # and whether it has been delivered, at the hub, or is in transit
@@ -18,7 +20,7 @@ class Package:
         self.delivery_time = None
 
     def __str__(self):
-        # TODO make sure to go over requirements for printing information
+        # ToString method to print a package's information
         print('\nPackage:', self.id_num, '\nDestination:', self.address, self.city, self.state, self.zip_code,
               '\nWeight:', self.weight, 'kg', '\nDeadline:', self.deadline,
               '\nLeft hub at:', self.left_hub_time, '\tDelivery Time:', self.delivery_time,

@@ -1,6 +1,9 @@
+# James Spencer  ID: 000486930
+
+
 class AddressBook:
-    # A static class to use as a reference for all other classes to look up
-    # addresses and distances
+    # A static class to use as a reference for all other
+    # classes to look up addresses and distances
     @staticmethod
     def address_reference():
         address_reference = []

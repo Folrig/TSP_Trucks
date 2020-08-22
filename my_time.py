@@ -1,10 +1,9 @@
+# James Spencer  ID: 000486930
+
+
 class Time:
-
-    # TODO make sure all time uses format of HH:MM AM for data reading
-    # TODO make sure all time uses format of HH:MM AM for input and return values
-
-    @staticmethod
     # A static method to adjust the time string into human readable form
+    @staticmethod
     def to_human_format(time):
         time_list = time.split(' ')
         time_str = str(time_list[0])
@@ -25,6 +24,8 @@ class Time:
         hours = int(time_list[0])
         minutes = str(time_list[1])
         if is_data_format:
+            if 'PM' in time_of_day:
+                hours += 12
             if hours < 10:
                 hours = str(hours)
                 hours = '0' + hours
@@ -33,7 +34,8 @@ class Time:
             formatted_time = str(hours) + ':' + minutes + ' ' + time_of_day
         return formatted_time
 
-    # A static method to take a time in HH:MM:SS and adjust it by minutes
+    # A static method to take a time in HH:MM:SS, adjust it by minutes
+    # and return the new time after the minutes have passed
     @staticmethod
     def adjust_time(time, time_passed):
         time_list = time.split(' ')

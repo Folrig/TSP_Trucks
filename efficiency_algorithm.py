@@ -1,9 +1,17 @@
+# James Spencer  ID: 000486930
+
+
 import math
 from address_book import AddressBook
 from priority_queue import PriorityQueue
 
 
 class EfficiencyAlgorithm:
+    # A static class that contains the algorithm for
+    # taking an unsorted list and assigning the delivery
+    # priority based upon delivery deadlines and similar
+    # addresses. Returns a PriorityQueue data structure
+    # Complexity of algorithm is O(n^2)
     @staticmethod
     def organize_route(unsorted_list):
         # Create variables to store our references
@@ -36,7 +44,7 @@ class EfficiencyAlgorithm:
             sorted_priority_queue.push(priority_value, item)
             priority_value += 1
         # Adjust priorities of packages based on if they have the same delivery address
-        # Complexity of O=n^2 because of nested for-loops
+        # Complexity of O(n^2) because of nested for-loops
         for i in range(0, len(sorted_priority_queue.queue)):
             j = i + 1
             for j in range(i, len(sorted_priority_queue.queue) - 1):
@@ -44,6 +52,9 @@ class EfficiencyAlgorithm:
                     sorted_priority_queue.queue[j].priority = sorted_priority_queue.queue[i].priority
         return sorted_priority_queue
 
+    # Helper method that looks for distances between packages
+    # Complexity is O(n^2) due to for loop nested
+    # within the while loop
     @staticmethod
     def sort_by_distance(unsorted_list):
         distances = AddressBook.distance_reference()

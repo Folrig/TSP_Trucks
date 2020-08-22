@@ -1,6 +1,9 @@
+# James Spencer  ID: 000486930
+
+
 from address_book import AddressBook
 from my_time import Time
-from package import Package
+# from package import Package
 
 
 class Truck:
@@ -18,12 +21,18 @@ class Truck:
         self.next_loc = 0
 
     def begin_delivery(self, depart_time):
+        # Class method to deliver packages
+        # This method accounts for trip time, miles traveled,
+        # and assigns package delivery times and status
+        # Overall complexity of O(n^2)
         self.current_time = depart_time
         # Begin delivery, set package attributes
+        # Complexity of O(n)
         for package_queue_item in self.current_load.queue:
             package_queue_item.item.delivery_status = 'En route'
             package_queue_item.item.left_hub_time = self.current_time
         # Deliver packages until there are none loaded
+        # Complexity of O(n^2). For loop nested within while loop
         while self.current_load.get_length() > 0:
             # Find which address to deliver to first based upon next package in load
             # Index 0 will always have the highest priority because of removal
@@ -51,7 +60,8 @@ class Truck:
                     else:
                         package_item.item.delivery_status = 'Package lost. Delivery unknown'
                     self.current_load.queue.remove(package_item)
-        # Return back to base if you are truck one and add that distance, adjust time
+        # Return back to base if you are the first truck driver
+        # Add that distance and adjust time appropriately
         if self.current_load.is_empty() and self.truck_id == 1:
             self.next_loc = 0
             trip_distance = float(AddressBook.distance_reference()[self.current_loc][self.next_loc])
